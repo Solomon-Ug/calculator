@@ -40,16 +40,16 @@ for row in range(row_count):
     for column in range(column_count):
         # noinspection PyUnresolvedReferences
         value = button_values[row][column]
-        button = tkinter.Button(frame, text=value, font=("Arial", 20), fg="yellow", bg="white",
+        button = tkinter.Button(frame, text=value, font=("Arial", 20), fg="green", bg="white",
                                 width=column_count-1, height=1, command=lambda value=value:button_clicked(value))
         button.grid(row=row+1, column=column)
 
         if value in top_symbols:
-            tk.Button(fg="blue", bg="black")
+            tk.Button(fg="white", bg="black")
         elif value in right_symbols:
             tk.Button(fg="blue" ,bg="black")
         else:
-            tk.Button(bg="gray", fg="blue")
+            tk.Button(bg="gray", fg="white")
         button.grid(row=row+1, column=column)
 
 frame.pack()
@@ -73,6 +73,9 @@ def button_clicked(value):
     if value in right_symbols:
         pass
     elif value in top_symbols:
+        if value == "=":
+            pass
+        elif value in ""
         if value == "AC":
             clear_all()
             label["text"] = "0"
@@ -88,7 +91,7 @@ def button_clicked(value):
                  label["text"] += value
         elif value in "0123456789":
             if label["text"] =="0":
-                label["text"] = value # replace 0 when the user tries to type 0 i.e 05 to display just 5
+                label["text"] = value # replace 0 when the user tries to type 0 ie 05 to display just 5
             else:
                 label["text"] += value
 
