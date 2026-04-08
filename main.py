@@ -14,13 +14,13 @@ top_symbols = ["AC", "+/-", "%"]
 
 row_count = len(button_values) #5
 column_count = len(button_values[0]) #4
-"""
-color_light_gray = (225, 225, 225)
-color_light_red = (255, 0, 0)
-color_light_green = (0, 255, 0)
-color_light_blue = (0, 0, 255)
-color_light_yellow = (255, 255, 0)
-"""
+
+color_light_grey = "#D4D4D2"
+color_black = "#1C1C1C"
+color_dark_grey="#505050"
+color_orange="#FF9500"
+color_white= "white"
+
 
 
 #window
@@ -45,9 +45,9 @@ for row in range(row_count):
         button.grid(row=row+1, column=column)
 
         if value in top_symbols:
-            tk.Button(fg="white", bg="black")
+            button.config(foreground=color_black, background=color_light_grey)
         elif value in right_symbols:
-            tk.Button(fg="blue" ,bg="black")
+            button.config(foreground=color_white ,background=color_orange)
         else:
             tk.Button(bg="gray", fg="white")
         button.grid(row=row+1, column=column)
@@ -59,41 +59,85 @@ operator = None
 B = None
 
 def clear_all():
-    global A, B, operator
+    global A, operator, B
     A ="0"
     operator = None
     B = None
+
 def remove_zero_decimal(num):
     if num % 1 == 0:
         num = int(num)
-        return str(num)
+    return str(num)
 
 def button_clicked(value):
     global right_symbols, top_symbols, label, A, B, operator
+
     if value in right_symbols:
-        pass
-    elif value in top_symbols:
         if value == "=":
-            pass
-        elif value in ""
+            if A is not None and operator is not None:
+                B = label["text"]
+                numA = float(A)
+                numB = float(B)
+
+                if operator == "+":
+                    label["text"] = remove_zero_decimal(numA + numB)[:12]
+
+                elif operator == "-":
+                    label["text"] = remove_zero_decimal(numA - numB)[:12]
+
+                elif operator == "*":
+                    label["text"] = remove_zero_decimal(numA * numB)[:12]
+
+                elif operator == "÷":
+                    if numB != 0:
+                        label["text"] = remove_zero_decimal(numA / numB)[:12]
+                    else:
+                        label["text"] = "Error"
+                
+                A = label["text"]
+                operator = None
+                B = None
+
+        elif value in "+-*÷":
+            if label["text"] != "Error":
+                A = label["text"]
+            label["text"] = "0"
+            operator = value
+
+    elif value in top_symbols:
         if value == "AC":
             clear_all()
             label["text"] = "0"
-        if value == "+/-":
+
+        elif value == "+/-":
             result = float(label["text"]) * -1
-            label["text"] = remove_zero_decimal(result)
-        if value == "%":
+            label["text"] = remove_zero_decimal(result)[:12]
+
+        elif value == "%":
             result = float(label["text"]) / 100
-            label["text"] = remove_zero_decimal(result)
+            label["text"] = remove_zero_decimal(result)[:12]
+
     else:
-        if value == ".":
-            if value not in label["text"]:
+        if value == "√":
+            try:
+                import math
+                num = float(label["text"])
+                if num >= 0:
+                    result = math.sqrt(num)
+                    label["text"] = remove_zero_decimal(result)[:12]
+                else:
+                    label["text"] = "Error"
+            except ValueError:
+                label["text"] = "Error"
+        elif value == ".":
+            if value not in label["text"] and len(label["text"]) < 12:
                  label["text"] += value
         elif value in "0123456789":
-            if label["text"] =="0":
-                label["text"] = value # replace 0 when the user tries to type 0 ie 05 to display just 5
-            else:
-                label["text"] += value
+            if len(label["text"]) < 12:
+                if label["text"] =="0" or label["text"] == "Error":
+                    label["text"] = value # replace 0 when the user tries to type 0 ie 05 to display just 5
+                else:
+                    label["text"] += value
 
 
 # center the window
@@ -109,5 +153,3 @@ window_y = int((screen_height / 2)-(window_height / 2))
 window.geometry(f"{window_width}x{window_height}+{window_x}+{window_y}")
 
 window.mainloop()
-
-
