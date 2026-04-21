@@ -1,9 +1,9 @@
-print("🎮 Welcome to the Number Guessing Game! 🎮")
+print(" Welcome to the Number Guessing Game! ")
 print("I have picked a secret number between 1 and 100.")
-print("You have 4 attempts to guess it.\n")
+print("You have 7 attempts to guess it.\n")
 
 secret_number = 67
-attempts = 10
+attempts = 7
 
 for attempt in range(1, attempts + 1):
     try:
